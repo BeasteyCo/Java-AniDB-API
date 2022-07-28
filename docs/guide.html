@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>
+        grizzlyxp homepage - Projects - Java AniDB API - Beginner's guide
+    </title>
+</head>
+<body>
+    <!-- http://www.page-counter.com Code START -->
+    <script language="JavaScript" type="text/javascript"
+        src="http://www.page-counter.com/pphlogger.js?id=grizzly">
+    </script>
+    <noscript>
+        <a href="http://www.page-portal.com">Counter Service</a>
+        <img src="http://www.page-counter.com/pphlogger.php?id=grizzly&st=img"
+            border="0">
+    </noscript>
+    <!-- http://www.page-counter.com Code END -->
+    <h1>grizzlyxp homepage</h1>
+    <p>
+        <a href="../../index.html">[Back to main page]</a>
+        <a href="../index.html">[Back to project page]</a>
+        <a href="index.html">[Back to Java AniDB API]</a>
+    </p>
+    <h2>Java AniDB API - Beginner's guide</h2>
+    <p>
+        This is only a short introduction to the Java AniDB API. For more
+        information please look at the Javadoc in the
+        <a href="index.html#Documentation">documentation</a> section of the
+        project page.
+    </p>
+    <p>
+        Before you are using this library I recommend to read (or glance
+        through) the following page: 
+        <a href="http://wiki.anidb.info/w/UDP_API_Definition">UDP API Definition</a>.
+        I think this way you will gain a deeper insight how the communication
+        works, what you should do and what you shouldn't do.
+    </p>
+   <p>
+        First I will point out that there are two ways of using the library:
+        Beginner can make use of the main methods and do the library all of the
+        work in the background (like flood protection and caching). Experts can
+        configure everything to their needs or do it with their own code by
+        disabling this functions. At least this are the two design goals.
+    </p>
+    <p>
+        But let's get started with some code:
+    </p>
+    <h3><a href="doc/net/anidb/udp/UdpConnectionFactory.html">UdpConnectionFactory</a>
+    and <a href="doc/net/anidb/udp/UdpConnection.html">UdpConnection</a></h3>
+    <p>
+        The <code>UdpConnectionFactory</code> is the starting point of the
+        library. This class will connect you to AniDB and return a
+        <code>UdpConnection</code> object which is the main object you have to
+        deal all the time:
+        <pre>
+            UdpConnectionFactory factory;
+            UdpConnection conn = null;
+            
+            factory = UdpConnectionFactory.getInstance();
+            try {
+                conn = factory.connect(1025);
+                
+                // Here you can insert your queries.
+                
+            } catch (Throwable t) {
+		t.printStackTrace();
+	    } finally {
+		try {
+                    if (conn != null) {
+			conn.close();
+                    }
+		} catch (Throwable t) {
+                    t.printStackTrace();
+		}
+	    }
+        </pre>
+        First you will fetch an instance of the class
+        <code>UdpConnectionFactory</code>. After that you connect to AniDB with
+        the local port <code>1025</code> and get a <code>UdpConnection</code>
+        object. If we speak about the
+        <a href="http://wiki.anidb.info/w/UDP_API_Definition">AniDB UDP API</a>
+        we also speaking about
+        <a href="http://en.wikipedia.org/wiki/User_Datagram_Protocol">UDP</a>.
+        This is in comparision to
+        <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol">TCP</a>
+        a stateless protocol. So you should allways call the
+        <a href="doc/net/anidb/udp/UdpConnection.html#close()"><code>close()</code></a>
+        method. Otherwise AniDB will keep the connection open for some time
+        which will cause unnecessary load for the server.
+    </p>
+    <p>
+        There are some commands you can use now and some you have to
+        authenticate your client and yourself for. Some of the commands which
+        works also in the un-authenticate state are
+        <a href="doc/net/anidb/udp/UdpConnection.html#ping()"><code>ping()</code></a> and
+        <a href="doc/net/anidb/udp/UdpConnection.html#getServerVersion()"><code>getServerVersion()</code></a>.
+        But for most of the commands you have to authenticate:
+        <pre>
+                conn.authenticate("&lt;anidb username&gt;", "&lt;anidb password&gt;");
+        </pre>
+        or if you want to authenticate your own client instead of the library:
+        <pre>
+                conn.authenticate("&lt;anidb username&gt;", "&lt;anidb password&gt;", "&lt;clientname&gt;", &lt;clientversion&gt;);
+        </pre>
+        For more information see also:
+        <a href="doc/net/anidb/udp/UdpConnection.html#authenticate(java.lang.String,%20java.lang.String)"><code>authenticate(String, String)</code></a>
+        and <a href="doc/net/anidb/udp/UdpConnection.html#authenticate(java.lang.String,%20java.lang.String,%20java.lang.String,%20int)"><code>authenticate(String, String, String, int)</code></a>
+        <br />
+        <br />
+    </p>
+    <p>
+        Now you can use all the other commands. One point at the end of the
+        guide: The return values from the data command methods.<br /><br />
+        All the returned objects are
+        <a href="http://en.wikipedia.org/wiki/POJO">POJO</a>s.
+        Some of them contain other objects, like objects of the
+        <a href="doc/net/anidb/Episode.html"><code>Episode</code></a> class
+        which contains a <a href="doc/net/anidb/Anime.html"><code>Anime</code></a>
+        object. So if you want to get the anime Id, you have to get the anime
+        object from the episode object and get the anime Id from it. Maybe it
+        looks a little bit long-drawn-out, but is a design decission for
+        extensions in the future (e.g. 1st and 2nd level caching).<br />
+        The <code>hashCode()</code> and <code>equals(Object)</code> methods are
+        implemented for all classes of <code>net.anidb.*</code> and
+        <code>net.anidb.udp.mask.*</code>. But for some classes they are only
+        working under special circumstances - as it is not reasonable in every
+        state. An example: For the class <a href="doc/net/anidb/Anime.html"><code>Anime</code></a>
+        <code>hashCode()</code> and <code>equals(Object)</code> will only
+        produce result which make sense if the anime Id is set.
+    </p>
+    <p>
+        <a href="../../index.html">[Back to main page]</a>
+        <a href="../index.html">[Back to project page]</a>
+        <a href="index.html">[Back to Java AniDB API]</a>
+    </p>
+</body>
+</html>

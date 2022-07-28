@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>grizzlyxp homepage - Projects - Java AniDB API</title>
+</head>
+<body>
+    <!-- http://www.page-counter.com Code START -->
+    <script language="JavaScript" type="text/javascript"
+        src="http://www.page-counter.com/pphlogger.js?id=grizzly">
+    </script>
+    <noscript>
+        <a href="http://www.page-portal.com">Counter Service</a>
+        <img src="http://www.page-counter.com/pphlogger.php?id=grizzly&st=img"
+            border="0">
+    </noscript>
+    <!-- http://www.page-counter.com Code END -->
+    <h1>grizzlyxp homepage</h1>
+    <p>
+        <a href="../../index.html">[Back to main page]</a>
+        <a href="../index.html">[Back to project page]</a>
+        <a href="#Overview">[Overview]</a>
+        <a href="#Documentation">[Documentation]</a>
+        <a href="#ToDo">[ToDo list]</a>
+        <a href="#Files">[Files]</a>
+    </p>
+    <a name="Overview"><h2>Java AniDB API</h2></a>
+    <p>
+        A Java library, not a real client. I hope that it will improve the
+        development of AniDB clients because the developers don't have to
+        implement the interface to AniDB over and over again.<br /><br />
+        See also: <a href="http://wiki.anidb.info/w/UDP_Clients#Java_AniDB_API">
+            Java AniDB API
+        </a> at AniDB Wiki.<br /><br />
+        The library is published under the
+        <a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL v2</a>.
+    </p>
+    <a name="Documentation"><h3>Documentation</h3></a>
+    <p>
+        <ul>
+            <li><a href="guide.html">Beginner's guide</a></li>
+            <li><a href="doc/index.html">Javadoc online</a></li>
+            <li><a href="javaanidbapi-doc-0.3.zip">Javadoc download</a></li>
+        </ul>
+    </p>
+    <a name="ToDo"><h3>ToDo list</h3></a>
+    <p>
+        The following features are plant for the next versions (maybe changed
+        along the development process) (Brain storming, no special order!):
+        <ul>
+            <li>
+                Clarify some questions about the API which arised until now with
+                the creators of AniDB.
+            </li>
+            <li>
+                Encoding<br />
+                Including the <code>ENCODING</code> command.
+            </li>
+            <li>
+                Listener system for state changes and for the return code 201:
+                <br /><code>201 {str session_key} LOGIN ACCEPTED - NEW VERSION
+                AVAILABLE</code>
+            </li>
+            <li>
+                Temporary caching of all <a href="http://wiki.anidb.info/w/UDP_API_Definition#Data_Commands">data commands</a>
+                in memory. (First level cache, configurable)
+            </li>
+            <li>Implementation of all other commands.</li>
+            <li>Implementation of the tag option.</li>
+            <li>Support of NAT</li>
+            <li>Support of different MTU size</li>
+            <li>
+                Permant caching of all data commands in files. (Second level
+                cache, configurable)
+            </li>
+            <li>
+                Use <a href="http://wiki.anidb.info/w/API#Data_Dumps">data dumps</a>
+                for second level cache.
+            </li>
+        </ul>
+    </p>
+    <a name="Files"><h3>Files</h3></a>
+    <h4>18.05.2011 - Announcement: Version 0.4 will be released soon!</h4>
+    <p>
+        After nearly 1 year the version 0.4 is within our grasp. I'm really
+        sorry that I didn't release any files for that long, but I was really
+        busy. There will be many bigger changes in the library as some
+        properties have changed and some new classes have been introduced. But
+        I'm sure you will find it more handy than handling with all these id
+        variables. I'm not sure when I will be able to release, but I hope it
+        will be in the next few weeks ("It's done when it's done"). So stay
+        tune.
+    </p>
+    <h4>Version 0.3 (31.07.2010)</h4>
+    <p>
+        New features / bug fixes in this:
+        <ul>
+            <li>Corrected the flood protection:<br/>
+                The "bonus" packets will be send by 0.5 packets per minute,
+                means 1 packet every 2 seconds.
+            </li>
+            <li>Not all packages were exported into the jar file in version 0.2.
+                And also there was not all JavaDoc created for all classes.
+            </li>
+        </ul>
+        Files:
+        <ul>
+            <li><a href="javaanidbapi-0.3.jar">JAR file</a>
+            <li><a href="javaanidbapi-doc-0.3.zip">Javadoc in a ZIP file</a>
+            <li><a href="javaanidbapi-src-0.3.zip">Sources in a ZIP file</a>
+        </ul>
+    </p>
+    <h4>Version 0.2 (02.03.2010)</h4>
+    <p>
+        New features in this:
+        <ul>
+            <li>Implemented some more commands:
+                <ul>
+                    <li>NOTIFYLIST</li>
+                    <li>NOTIFYGET</li>
+                    <li>NOTIFYACK</li>
+                    <li>SENDMSG</li>
+                    <li>USER</li>
+                </ul>    
+            </li>
+            <li>Supports encodings: The default encoding after the start of the
+                connection will be US-ASCII as described in the UDP API
+                Definition. After the AUTHENTICATE command the library will
+                automatically switch to UTF-8 which will be the most common
+                enconding most developers will use. And the library does some
+                HTML decoding now, too.</li>
+            <li>Improved the flood protection: If you have send the first 4
+                packets, you will be in "1 packet per 30 seconds" mode. The
+                difference is now that you can earn a "bonus" means you will get
+                a bonus every 30 seconds you don't send a packet. This "bonus
+                packets" will be send by the initial rate of 1 packet every 5
+                seconds until the bonus is spend.</li>
+            <li>Checksum / hash calculation: As other libraries with this
+                functions are far more big than this, I made a light-weight
+                implementation of the hash functions you need for AniDB: Crc32,
+                Ed2k, Md4 (used by Ed2k), Md5, Sha160, Tiger (used by Tiger
+                Tree) and last, but not least, Tiger Tree.</li>
+            <li>I added some logging for debbuging purposes. And I decided to
+                use the Apache Commonds Logging package:
+                <a href="http://commons.apache.org/logging/">http://commons.apache.org/logging/</a><br/>
+                For further information look at the JavaDoc of the
+                <code>net.anidb.logging.AbstractLog</code> class. I recommend to
+                use at least the "warn" log level.</li>
+            <li>Additional fields are covered now, too. In the last version you
+                got an exception if the response had more fields than expected.
+                This is the case when the developers of AniDB.net add some
+                fields. Now you will get a "warn" message into the log.</li>
+        </ul>
+        Files:
+        <ul>
+            <li><a href="javaanidbapi-0.2.jar">JAR file</a>
+            <li><a href="javaanidbapi-doc-0.2.zip">Javadoc in a ZIP file</a>
+            <li><a href="javaanidbapi-src-0.2.zip">Sources in a ZIP file</a>
+        </ul>
+    </p>
+    <h4>Version 0.1 (31.12.2009)</h4>
+    <p>
+        New features in this:
+        <ul>
+            <li>Works with <a href="http://wiki.anidb.info/w/UDP_API_Definition#General_Information">protocol version 3</a>.
+            <li>The following commands are implemented:
+                <ul>
+                    <li><code>AUTH</code></li>
+                    <li><code>LOGOUT</code></li>
+                    <li><code>ANIME</code></li>
+                    <li><code>ANIMEDESC</code></li>
+                    <li><code>EPISODE</code></li>
+                    <li><code>FILE</code></li>
+                    <li><code>GROUP</code></li>
+                    <li><code>GROUPSTATUS</code></li>
+                    <li><code>CREATOR</code></li>
+                    <li><code>CHARACTER</code></li>
+                    <li><code>PING</code></li>
+                    <li><code>VERSION</code></li>
+                    <li><code>UPTIME</code></li>
+                </ul>
+            </li>
+            <li>Flood protection</li>
+        </ul>
+        Files:
+        <ul>
+            <li><a href="javaanidbapi-0.1.jar">JAR file</a>
+            <li><a href="javaanidbapi-doc-0.1.zip">Javadoc in a ZIP file</a>
+            <li><a href="javaanidbapi-src-0.1.zip">Sources in a ZIP file</a>
+        </ul>
+    </p>
+    <p>
+        <a href="../../index.html">[Back to main page]</a>
+        <a href="../index.html">[Back to project page]</a>
+        <a href="#Overview">[Overview]</a>
+        <a href="#Documentation">[Documentation]</a>
+        <a href="#ToDo">[ToDo list]</a>
+        <a href="#Files">[Files]</a>
+    </p>
+</body>
+</html>
