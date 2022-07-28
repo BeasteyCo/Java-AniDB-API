@@ -1,0 +1,62 @@
+Version 0.3 - 31.07.2010
+
+- Corrected the flood protection:
+  The "bonus" packets will be send by 0.5 packets per minute, means 1 packet
+  every 2 seconds.
+- Not all packages were exported into the jar file in version 0.2. And also
+  there was not all JavaDoc created for all classes.
+
+--------------------------------------------------------------------------------
+
+Version 0.2 - 02.03.2010
+
+- Implemented some more commands:
+    - NOTIFYLIST
+    - NOTIFYGET
+    - NOTIFYACK
+    - SENDMSG
+    - USER
+- Supports encodings: The default encoding after the start of the connection
+  will be US-ASCII as described in the UDP API Definition. After the
+  AUTHENTICATE command the library will automatically switch to UTF-8 which will
+  be the most common enconding most developers will use.
+  And the library does some HTML decoding now, too.
+- Improved the flood protection: If you have send the first 4 packets, you will
+  be in "1 packet per 30 seconds" mode. The difference is now that you can earn
+  a "bonus" means you will get a bonus every 30 seconds you don't send a packet.
+  This "bonus packets" will be send by the initial rate of 1 packet every 0.5
+  seconds until the bonus is spend.
+- Checksum / hash calculation: As other libraries with this functions are far
+  more big than this, I made a light-weight implementation of the hash functions
+  you need for AniDB: Crc32, Ed2k, Md4 (used by Ed2k), Md5, Sha160, Tiger (used
+  by Tiger Tree) and last, but not least, Tiger Tree.
+- I added some logging for debbuging purposes. And I decided to use the Apache
+  Commonds Logging package: http://commons.apache.org/logging/
+  For further information look at the JavaDoc of the
+  net.anidb.logging.AbstractLog class. I recommend to use at least the "warn"
+  log level.
+- Additional fields are covered now, too. In the last version you got an
+  exception if the response had more fields than expected. This is the case when
+  the developers of AniDB.net add some fields. Now you will get a "warn" message
+  into the log.
+
+--------------------------------------------------------------------------------
+
+Version 0.1 - 31.12.2009
+
+- Works with protocol version 3.
+- The following commands are implemented:
+    - AUTH
+    - LOGOUT
+    - ANIME
+    - ANIMEDESC
+    - EPISODE
+    - FILE
+    - GROUP
+    - GROUPSTATUS
+    - CREATOR
+    - CHARACTER
+    - PING
+    - VERSION
+    - UPTIME
+- Flood protection
